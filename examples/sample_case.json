@@ -1,0 +1,16 @@
+{
+  "tx_power_w": 0.01,
+  "distances_m": [
+    1,
+    5,
+    10,
+    20
+  ],
+  "water": "coastal",
+  "noise_power_w": 0.000001,
+  "outputs": [
+    "received_power_w",
+    "snr_linear",
+    "ber_ook"
+  ]
+}
