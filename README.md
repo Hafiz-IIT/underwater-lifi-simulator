@@ -1,17 +1,15 @@
 # Underwater Li-Fi Simulator
 
-> **A reproducible optical-channel baseline for the underwater Li-Fi idea: attenuation, link budget, SNR, BER, and turbidity.**
+> Simplified underwater optical-communication simulator covering attenuation, received power, SNR and OOK bit-error rate.
 
-Underwater optical communication was one of the older science/research ideas, but a credible public artifact should distinguish a software channel model from hardware experimentation. This repository implements the former and states that boundary explicitly.
+## Status
+**Reproducible prototype** with executable code, tests, CI, architecture, evaluation and roadmap documentation.
 
-## Implemented
-- Beer-Lambert optical attenuation
-- clear/coastal/turbid attenuation presets
-- received optical-power calculation
-- SNR calculation
-- approximate OOK BER
-- distance sweep helper
-- input validation
+## Problem
+Underwater optical links trade range against attenuation, turbidity, transmit power and noise. A transparent software model provides a defensible bridge from earlier Li-Fi concepts to measurable experiments.
+
+## Architecture
+Water attenuation preset + distance + transmit power + noise → Beer-Lambert received power → SNR → approximate OOK BER → distance sweep.
 
 ## Run
 ```bash
@@ -19,23 +17,29 @@ python -m unittest discover -s tests -v
 python underwater_lifi_simulator.py
 ```
 
-## Repository map
-- `underwater_lifi_simulator.py` — core implementation
-- `tests/` — deterministic tests
-- `examples/` — reproducible example
-- `docs/architecture.md` — architecture
-- `docs/research-agenda.md` — experiments and research lineage
-- `STATUS.md` — claims boundary
-- `CITATION.cff` — citation metadata
-
-## Pipeline
-**transmit power → water attenuation → distance → received power → noise → SNR → OOK BER**
+## Implemented
+- Water-condition presets
+- Beer-Lambert attenuation
+- Received optical power
+- SNR calculation
+- Approximate OOK BER
+- Distance sweep helper
+- Tests and CI
 
 ## Research lineage
-This repository is the concrete software artifact for the historical Underwater Li-Fi / optical data-transmission work and is separate from the broader 6G/solar-fiber and wireless-power concepts that still remain research backlog.
+- *AI in Energy Efficiency Management*
+- *Smart Urban Infrastructures: AI-Enabled City Optimization*
+- *Bridging Classical Control and Modern AI: A Unified Framework for Automated Agents*
 
-## Evaluation direction
-Sweep distance, water attenuation, transmit power, and noise floor; create link-budget curves and sensitivity analysis. Hardware claims require separate instrumentation and experimental records.
+## Evaluation
+Tests verify monotonic power loss with distance, worse turbid-water performance and BER degradation under poorer channels.
 
-## Maturity
-**Research prototype.** This is a simplified analytical simulator. It does not claim a built modem, underwater field tests, hardware innovation, validated ocean optics, or measured throughput.
+## Limitations
+- Simplified channel model
+- No scattering/geometric optics model
+- No real hardware measurements
+- No modem/PHY implementation
+- No ocean validation claim
+
+## License
+MIT.
