@@ -43,3 +43,7 @@ Tests verify monotonic power loss with distance, worse turbid-water performance 
 
 ## License
 MIT.
+
+## Extended implementation
+
+- `range_analysis.py` estimates the maximum modeled distance that satisfies a configurable OOK BER threshold.
