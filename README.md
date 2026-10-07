@@ -1,49 +1,54 @@
 # Underwater Li-Fi Simulator
 
-> Simplified underwater optical-communication simulator covering attenuation, received power, SNR and OOK bit-error rate.
+<p align="center"><strong>Underwater Optical Link Modeling</strong><br/><sub>Attenuation → received power → SNR → approximate OOK BER → range.</sub></p>
 
-## Status
-**Reproducible prototype** with executable code, tests, CI, architecture, evaluation and roadmap documentation.
+<p align="center"><img src="https://img.shields.io/badge/status-reproducible%20prototype-blue" alt="Prototype"/> <img src="https://img.shields.io/badge/domain-underwater%20optical%20communications-purple" alt="Optical communications"/></p>
 
-## Problem
-Underwater optical links trade range against attenuation, turbidity, transmit power and noise. A transparent software model provides a defensible bridge from earlier Li-Fi concepts to measurable experiments.
+## Question
 
-## Architecture
-Water attenuation preset + distance + transmit power + noise → Beer-Lambert received power → SNR → approximate OOK BER → distance sweep.
+**How does water condition and distance constrain a simplified underwater optical communication link?**
 
-## Run
-```bash
-python -m unittest discover -s tests -v
-python underwater_lifi_simulator.py
+```
+Water condition + distance + Tx power + noise
+                     ↓
+             attenuation model
+                     ↓
+              received power
+                     ↓
+                    SNR
+                     ↓
+             approximate OOK BER
+                     ↓
+               usable range
 ```
 
+## Try it
+
+```bash
+python underwater_lifi_simulator.py
+python range_analysis.py
+python -m unittest discover -s tests -v
+```
+
+`range_analysis.py` adds BER-constrained maximum-distance estimation using a bounded search.
+
 ## Implemented
-- Water-condition presets
-- Beer-Lambert attenuation
-- Received optical power
-- SNR calculation
-- Approximate OOK BER
-- Distance sweep helper
-- Tests and CI
 
-## Research lineage
-- *AI in Energy Efficiency Management*
-- *Smart Urban Infrastructures: AI-Enabled City Optimization*
-- *Bridging Classical Control and Modern AI: A Unified Framework for Automated Agents*
+- water-condition presets
+- Beer–Lambert attenuation
+- received optical power
+- SNR
+- approximate OOK BER
+- distance sweeps
+- BER-constrained range analysis
+- deterministic CI
 
-## Evaluation
-Tests verify monotonic power loss with distance, worse turbid-water performance and BER degradation under poorer channels.
+## Research boundary
 
-## Limitations
-- Simplified channel model
-- No scattering/geometric optics model
-- No real hardware measurements
-- No modem/PHY implementation
-- No ocean validation claim
+This is a **simplified software model**. It is not a validated underwater modem design, hardware implementation, or field measurement.
 
-## License
-MIT.
+## Why it is in the portfolio
 
-## Extended implementation
+The project connects an early communications concept to an executable quantitative model: assumptions become parameters, parameters become sweeps, and the resulting claims remain inspectable.
 
-- `range_analysis.py` estimates the maximum modeled distance that satisfies a configurable OOK BER threshold.
+Related: [Logistics Optimization Lab](https://github.com/Hafiz-IIT/logistics-optimization-lab)
