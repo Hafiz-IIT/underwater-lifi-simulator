@@ -19,6 +19,13 @@ class UnderwaterLiFiTests(unittest.TestCase):
         turbid = link_budget(tx_power_w=0.0001, distance_m=10, water="turbid", noise_power_w=1e-5)
         self.assertLess(clear.ber_ook, turbid.ber_ook)
 
+    def test_oversized_integer_physical_inputs_are_rejected(self):
+        huge = 10 ** 10000
+        with self.assertRaises(ValueError):
+            received_power(huge, 1.0, 0.2)
+        with self.assertRaises(ValueError):
+            link_budget(tx_power_w=0.01, distance_m=huge, noise_power_w=1.0)
+
     def test_non_finite_physical_inputs_are_rejected(self):
         with self.assertRaises(ValueError):
             received_power(1.0, float("inf"), 0.2)
