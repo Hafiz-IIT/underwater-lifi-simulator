@@ -11,14 +11,10 @@ def max_distance_for_ber(*, tx_power_w: float, water: str, noise_power_w: float,
         raise ValueError("search_high_m must be finite and positive")
     if isinstance(iterations, bool) or not isinstance(iterations, int) or not 1 <= iterations <= 256:
         raise ValueError("iterations must be an integer between 1 and 256")
-
     at_zero = link_budget(tx_power_w=tx_power_w, distance_m=0.0, water=water, noise_power_w=noise_power_w)
-    if at_zero.ber_ook > max_ber:
-        return 0.0
+    if at_zero.ber_ook > max_ber: return 0.0
     at_high = link_budget(tx_power_w=tx_power_w, distance_m=float(search_high_m), water=water, noise_power_w=noise_power_w)
-    if at_high.ber_ook <= max_ber:
-        return float(search_high_m)
-
+    if at_high.ber_ook <= max_ber: return float(search_high_m)
     low, high = 0.0, float(search_high_m)
     for _ in range(iterations):
         mid = (low + high) / 2.0
