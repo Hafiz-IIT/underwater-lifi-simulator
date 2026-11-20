@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import erfc, exp, sqrt
+from math import erfc, exp, sqrt, isfinite
 
 
 ATTENUATION_PER_M = {
@@ -20,14 +20,17 @@ class LinkBudget:
 
 
 def received_power(tx_power_w: float, distance_m: float, attenuation_per_m: float) -> float:
+    values = (tx_power_w, distance_m, attenuation_per_m)
+    if not all(isfinite(value) for value in values):
+        raise ValueError("physical inputs must be finite")
     if tx_power_w < 0 or distance_m < 0 or attenuation_per_m < 0:
         raise ValueError("physical inputs must be non-negative")
     return tx_power_w * exp(-attenuation_per_m * distance_m)
 
 
 def ook_ber_from_snr(snr_linear: float) -> float:
-    if snr_linear < 0:
-        raise ValueError("snr must be non-negative")
+    if not isfinite(snr_linear) or snr_linear < 0:
+        raise ValueError("snr must be finite and non-negative")
     return 0.5 * erfc(sqrt(snr_linear / 2.0))
 
 
@@ -40,8 +43,8 @@ def link_budget(
 ) -> LinkBudget:
     if water not in ATTENUATION_PER_M:
         raise ValueError("unknown water preset")
-    if noise_power_w <= 0:
-        raise ValueError("noise power must be positive")
+    if not isfinite(noise_power_w) or noise_power_w <= 0:
+        raise ValueError("noise power must be finite and positive")
 
     rx = received_power(tx_power_w, distance_m, ATTENUATION_PER_M[water])
     snr = rx / noise_power_w
