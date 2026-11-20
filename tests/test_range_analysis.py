@@ -16,6 +16,12 @@ class RangeAnalysisTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             max_distance_for_ber(tx_power_w=1, water="clear", noise_power_w=1, max_ber=0.1, iterations=0)
 
+    def test_nonfinite_threshold_and_invalid_iterations_rejected(self):
+        with self.assertRaises(ValueError):
+            max_distance_for_ber(tx_power_w=1, water="clear", noise_power_w=1, max_ber=float("nan"))
+        with self.assertRaises(ValueError):
+            max_distance_for_ber(tx_power_w=1, water="clear", noise_power_w=1, max_ber=0.1, iterations=0)
+
     def test_invalid_ber_threshold(self):
         with self.assertRaises(ValueError):
             max_distance_for_ber(
