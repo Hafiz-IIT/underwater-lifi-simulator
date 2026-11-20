@@ -10,6 +10,19 @@ class RangeAnalysisTests(unittest.TestCase):
         turbid = max_distance_for_ber(water="turbid", **kwargs)
         self.assertGreater(clear, turbid)
 
+    def test_nonfinite_threshold_and_invalid_iterations_rejected(self):
+        with self.assertRaises(ValueError):
+            max_distance_for_ber(tx_power_w=1, water="clear", noise_power_w=1, max_ber=float("nan"))
+        with self.assertRaises(ValueError):
+            max_distance_for_ber(tx_power_w=1, water="clear", noise_power_w=1, max_ber=0.1, iterations=0)
+
+    def test_oversized_integer_search_parameters_are_rejected(self):
+        huge = 10 ** 10000
+        with self.assertRaises(ValueError):
+            max_distance_for_ber(tx_power_w=1, water="clear", noise_power_w=1, max_ber=huge)
+        with self.assertRaises(ValueError):
+            max_distance_for_ber(tx_power_w=1, water="clear", noise_power_w=1, max_ber=0.1, search_high_m=huge)
+
     def test_invalid_ber_threshold(self):
         with self.assertRaises(ValueError):
             max_distance_for_ber(
