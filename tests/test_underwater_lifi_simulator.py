@@ -14,6 +14,14 @@ class UnderwaterLiFiTests(unittest.TestCase):
         turbid = link_budget(tx_power_w=0.01, distance_m=10, water="turbid")
         self.assertGreater(clear.received_power_w, turbid.received_power_w)
 
+    def test_nonfinite_physical_inputs_are_rejected(self):
+        with self.assertRaises(ValueError):
+            received_power(float("nan"), 1.0, 0.2)
+        with self.assertRaises(ValueError):
+            link_budget(tx_power_w=0.01, distance_m=float("inf"))
+        with self.assertRaises(ValueError):
+            link_budget(tx_power_w=0.01, distance_m=1, noise_power_w=float("nan"))
+
     def test_worse_channel_increases_ber(self):
         clear = link_budget(tx_power_w=0.0001, distance_m=10, water="clear", noise_power_w=1e-5)
         turbid = link_budget(tx_power_w=0.0001, distance_m=10, water="turbid", noise_power_w=1e-5)
